@@ -1,0 +1,244 @@
+[
+  {
+    "name": "create_project",
+    "description": "Creates a new Stitch project. A project is a container for UI designs and frontend code.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Optional. The title of the project."
+        }
+      }
+    }
+  },
+  {
+    "name": "get_project",
+    "description": "Retrieves the details of a specific Stitch project using its project name.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Required. Resource name in format projects/{projectId}."
+        }
+      },
+      "required": ["name"]
+    }
+  },
+  {
+    "name": "list_projects",
+    "description": "Lists all Stitch projects accessible to the user.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "filter": {
+          "type": "string",
+          "description": "Optional filter, e.g. view=owned or view=shared."
+        }
+      }
+    }
+  },
+  {
+    "name": "list_screens",
+    "description": "Lists all screens within a given Stitch project.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "description": "Required. The project ID to list screens for, without projects/ prefix."
+        }
+      },
+      "required": ["projectId"]
+    }
+  },
+  {
+    "name": "get_screen",
+    "description": "Retrieves the details of a specific screen within a project.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Required. Resource name format: projects/{project}/screens/{screen}."
+        }
+      },
+      "required": ["name"]
+    }
+  },
+  {
+    "name": "generate_screen_from_text",
+    "description": "Generates a new screen within a project from a text prompt.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "description": "Required. The project ID to generate screen for."
+        },
+        "prompt": {
+          "type": "string",
+          "description": "Required. Text description of the screen to generate."
+        },
+        "deviceType": {
+          "type": "string",
+          "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"],
+          "description": "Device form factor for screen layout."
+        },
+        "modelId": {
+          "type": "string",
+          "enum": ["MODEL_ID_UNSPECIFIED", "GEMINI_3_8_FLASH", "GEMINI_3_5_FLASH_LITE"],
+          "description": "Optional model to use for generation."
+        },
+        "designSystem": {
+          "type": "string",
+          "description": "Optional design system asset id to reuse (e.g. assets/123456)."
+        }
+      },
+      "required": ["projectId", "prompt"]
+    }
+  },
+  {
+    "name": "edit_screens",
+    "description": "Edits existing screens within a project using a text prompt.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "description": "Required. The project ID containing screens to edit."
+        },
+        "selectedScreenIds": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Required. The screen IDs to edit (without screens/ prefix)."
+        },
+        "prompt": {
+          "type": "string",
+          "description": "Required. Edit instructions or modifications to perform."
+        },
+        "deviceType": {
+          "type": "string",
+          "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"]
+        },
+        "modelId": {
+          "type": "string",
+          "enum": ["MODEL_ID_UNSPECIFIED", "GEMINI_3_8_FLASH", "GEMINI_3_5_FLASH_LITE"]
+        }
+      },
+      "required": ["projectId", "selectedScreenIds", "prompt"]
+    }
+  },
+  {
+    "name": "generate_variants",
+    "description": "Generates design variants of existing screens within a project.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "description": "Required. The project ID."
+        },
+        "selectedScreenIds": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Required. Screen IDs to generate variants for."
+        },
+        "prompt": {
+          "type": "string",
+          "description": "Required. Prompt explaining variation directions."
+        },
+        "variantOptions": {
+          "$ref": "#/$defs/VariantOptions",
+          "description": "Variant configuration options."
+        },
+        "deviceType": {
+          "type": "string",
+          "enum": ["DEVICE_TYPE_UNSPECIFIED", "MOBILE", "DESKTOP", "TABLET", "AGNOSTIC"]
+        },
+        "modelId": {
+          "type": "string",
+          "enum": ["MODEL_ID_UNSPECIFIED", "GEMINI_3_8_FLASH", "GEMINI_3_5_FLASH_LITE"]
+        }
+      },
+      "required": ["projectId", "selectedScreenIds", "prompt", "variantOptions"]
+    }
+  },
+  {
+    "name": "download_file",
+    "description": "Downloads the content of a screen file: its HTML code or screenshot.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Required. Resource name of the file (projects/{project}/files/{file})."
+        }
+      },
+      "required": ["name"]
+    }
+  },
+  {
+    "name": "download_assets",
+    "description": "Downloads screens and assets to a local directory.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "description": "Required. Project ID."
+        },
+        "outputDir": {
+          "type": "string",
+          "description": "Required. Output directory path."
+        }
+      },
+      "required": ["projectId", "outputDir"]
+    }
+  },
+  {
+    "name": "list_design_systems",
+    "description": "Lists all design systems associated with a project.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "projectId": {
+          "type": "string",
+          "description": "Required. Project ID."
+        }
+      },
+      "required": ["projectId"]
+    }
+  },
+  {
+    "name": "apply_design_system",
+    "description": "Applies a design system to a list of screen instances.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "projectId": { "type": "string" },
+        "assetId": { "type": "string" },
+        "selectedScreenInstances": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/SelectedScreenInstance" }
+        }
+      },
+      "required": ["projectId", "selectedScreenInstances", "assetId"]
+    }
+  },
+  {
+    "name": "delete_project",
+    "description": "Deletes a Stitch project.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Required. Resource name projects/{project}."
+        }
+      },
+      "required": ["name"]
+    }
+  }
+]

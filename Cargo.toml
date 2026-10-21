@@ -1,0 +1,35 @@
+[package]
+name = "stitch-rs"
+version = "0.1.0"
+edition = "2021"
+authors = ["Charles Adedotun <charles.adedotun8@gmail.com>"]
+description = "High-performance, safe, idiomatic Rust client library and CLI for Google Stitch"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/charles-adedotun/stitch-rs"
+readme = "README.md"
+
+[lib]
+name = "stitch_rs"
+path = "src/lib.rs"
+
+[[bin]]
+name = "stitch-cli"
+path = "src/main.rs"
+
+[dependencies]
+tokio = { version = "1.40", features = ["full"] }
+reqwest = { version = "0.13", default-features = false, features = ["rustls", "json"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+clap = { version = "4.5", features = ["derive"] }
+thiserror = "2.0"
+uuid = { version = "=1.26.1", features = ["v4"] }
+base64 = "0.23"
+regex = "1.10"
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = true

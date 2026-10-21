@@ -1,0 +1,29 @@
+# Rust build artifacts
+/target
+target/
+**/*.rs.bk
+
+# Credentials & secrets
+*.env
+*.env.*
+*.key
+*.pem
+stitch_api_key.txt
+credentials.json
+token.json
+
+# Logs & temp files
+*.log
+*.tmp
+*.swp
+*~
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# IDE configuration
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
